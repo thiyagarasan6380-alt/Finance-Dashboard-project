@@ -194,7 +194,7 @@ body {
     display: flex;
     flex-direction: column;
     gap: 15px;
-    height: 50px;
+
 
 }
 
@@ -372,6 +372,7 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 10px;
     margin-bottom: 20px;
 }
 
@@ -386,4 +387,78 @@ body {
     background: #08111f;
     border-radius: 10px;
     border: 1px solid #1e293b;
+}
+
+@media (max-width: 768px) {
+
+    .appbody {
+        grid-template-columns: 1fr;
+    }
+
+    .sidebar {
+        width: 100%;
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+        padding: 1rem;
+    }
+
+    .hub-list {
+        flex-direction: row;
+        justify-content: space-around;
+    }
+
+    .Main-container {
+        padding: 1rem;
+    }
+
+    .Dashboard-header h1 {
+        font-size: 1.8rem;
+    }
+
+    .Dashboard-section {
+        grid-template-columns: 1fr;
+    }
+
+    .data-hub {
+        grid-template-columns: 1fr;
+    }
+
+    .table-lists {
+        grid-template-columns: 1fr;
+    }
+
+    .metric-card,
+    .formcard,
+    .Transaction-table,
+    .Action-table {
+        width: 100%;
+        padding: 20px;
+    }
+
+    .Action-table {
+        height: auto;
+    }
+
+    #Recent-list {
+        height: 300px;
+    }
+
+    #Recent-list li {
+
+        align-items: flex-start;
+        flex-wrap: wrap;
+        gap: 10px;
+        height: auto;
+    }
+
+    #addBtn,
+    #clearBtn {
+        width: 100%;
+        margin-top: 10px;
+    }
+
+    .clearclass {
+        flex-direction: column;
+        align-items: flex-start;
+    }
 }
