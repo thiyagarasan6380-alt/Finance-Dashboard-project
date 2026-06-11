@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personal Finance Dashboard</title>
+    <link rel="stylesheet" href="FinanceDashboard.css">
+</head>
+
+<body>
+
+    <div class="appbody">
+
+        <aside class="sidebar">
+            <h2>FinanceHub</h2>
+            <nav class="hub-list">
+                <a href="#" class="nav-item active">Dashboard</a>
+                <a href="#" class="nav-item">Transaction</a>
+                <a href="#" class="nav-item">Setting</a>
+            </nav>
+        </aside>
+
+        <main class="Main-container">
+
+            <header class="Dashboard-header">
+                <h1 id="nameid">Welcome, Arasan</h1>
+                <h4>Let's simplify your finances.</h4>
+            </header>
+
+            <section class="Dashboard-section">
+                <div class="metric-card">
+                    <h3 id="cardid">Total Balance</h3>
+                    <strong id="balanceid">₹0.00</strong>
+                </div>
+                <div class="metric-card">
+                    <h3 id="cardid">Total Income</h3>
+                    <strong id="incomeid">₹0.00</strong>
+                </div>
+                <div class="metric-card">
+                    <h3 id="cardid">Total Expenses</h3>
+                    <strong id="expenseid">₹0.00</strong>
+                </div>
+                <div class="metric-card">
+                    <h3 id="cardid">Savings Rate </h3>
+                    <strong id="savingid">-%</strong>
+                </div>
+            </section>
+
+            <div class="data-hub">
+
+                <section class="formcard">
+                    <h3 class="headings">Add New Transaction</h3>
+                    <div class="live-time" id="date-id"></div>
+                    <form id="transaction-form">
+                        <input type="text" id="description-id" placeholder="Description" required>
+                        <input type="number" id="Amount-id" placeholder="Amount" required>
+                        <button type="submit" id="addBtn">Add</button>
+                    </form>
+                </section>
+
+                <div class="table-lists">
+
+                    <section class="Transaction-table">
+                        <div class="clearclass">
+                            <h3 class="headings">Recent Transaction </h3>
+                            <button id="clearBtn">Clear All</button>
+                        </div>
+                        <ul id="Recent-list">
+                            <span class="expense-text"></span>
+                            <span class="income-text"></span>
+                        </ul>
+                    </section>
+
+                    <section class="Action-table">
+                        <h3>📊 Financial Statistics</h3>
+
+                        <div class="goals-list">
+
+                            <div class="stat-item">
+                                <br>
+                                <span class="stat-value" id="Hincome">Highest Income :₹0</span>
+                            </div>
+
+                            <div class="stat-item">
+                                <br>
+                                <span class="stat-value" id="Hexpense">Highest Expense :₹0</span>
+                            </div>
+
+                            <div class="stat-item">
+                                <br>
+                                <span class="stat-value" id="nooftransaction">Total Transactions :0</span>
+                            </div>
+
+                            <div class="stat-item">
+                                <br>
+                                <span class="stat-value" id="averageid">Average Transactions :0</span>
+                            </div>
+
+                        </div>
+                    </section>
+
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+<script src="FinanceDashboard.js"></script>
+
+</html>
