@@ -137,8 +137,24 @@ function renderTransaction(information) {
 
         })
 
+        let editBtn = document.createElement("button");
+        editBtn.innerText = "Edit";
+        editBtn.classList.add("edit-btn");
+        editBtn.addEventListener("click", () => {
+            let newName=prompt("Enter new description:", t.description);
+            let newAmount=prompt("Enter new amount:", t.amount);
+            if (
+                newName === null ||newAmount === null ||newName.trim() === "" ||newAmount.trim() === "" ) {return;}
+
+            t.description=newName;
+            t.amount=newAmount;
+            localStorage.setItem("Details",JSON.stringify(details));
+            location.reload();
+        });
+
         li.appendChild(span1);
         li.appendChild(span2);
+        li.appendChild(editBtn);
         li.appendChild(delBtn);
         list.appendChild(li)
 

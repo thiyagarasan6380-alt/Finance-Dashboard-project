@@ -257,16 +257,18 @@ body {
 }
 
 #Recent-list li {
-    display: flex;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: 1.5fr 120px 80px 80px;
     align-items: center;
+    gap: 15px;
     transition: 2s;
     padding: 0.75rem 1rem;
     background: linear-gradient(135deg, #0f172a, #16243f);
     border-radius: 12px;
     font-size: 0.95rem;
     font-weight: 500;
-    height: 50px;
+    min-height: 50px;
+    height: 70px;
 
 }
 
@@ -331,7 +333,8 @@ body {
     white-space: nowrap;
 }
 
-.delete-btn {
+.delete-btn ,
+.edit-btn{
     background: #ef4444;
     color: white;
     border-radius: 8px;
@@ -340,6 +343,8 @@ body {
     cursor: pointer;
     font-weight: 600;
     transition: 0.3s;
+    width: 70px;
+    height: 35px;
 }
 
 #clearBtn {
