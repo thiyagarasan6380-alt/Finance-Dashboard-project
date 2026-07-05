@@ -16,7 +16,6 @@ function setUsername(name) {
 
 }
 
-
 let details = [];
 let savedDetails = []
 
@@ -32,6 +31,8 @@ let amount = document.getElementById("Amount-id");
 let addBtn = document.getElementById("addBtn");
 let list = document.getElementById("Recent-list");
 
+let category=document.getElementById("categorylist");
+
 let Balance = document.getElementById("balanceid");
 let Income = document.getElementById("incomeid");
 let Expense = document.getElementById("expenseid");
@@ -41,7 +42,24 @@ let Highestincome = document.getElementById("Hincome");
 let Highestexpense = document.getElementById("Hexpense");
 let NoTransaction = document.getElementById("nooftransaction");
 
+let foodId=document.getElementById("category1");
+let travelId=document.getElementById("category2");
+let shoppingId=document.getElementById("category3");
+let billsId=document.getElementById("category4");
+let healthId=document.getElementById("category5");
+let othersId=document.getElementById("category6");
+
+let currentMonthText=document.getElementById("currentMonth");
+let previousMonthText=document.getElementById("previousMonth");
+let differenceMonthText=document.getElementById("difference");
+let statusMonthText=document.getElementById("monthStatus");
+
 let themeBtn = document.getElementById("themeBtn");
+let expenseChart = document.getElementById("expenseChart");
+let ctx = expenseChart.getContext("2d");
+let expenseGraph;
+let categoryGraph;
+console.log(ctx);
 
 // saved Details to load after refresh//
 
@@ -52,6 +70,8 @@ if (savedetails) {
 
     renderTransaction(details);
     statistic();
+    categoryStatus();
+    monthlyComparison();
 };
 
 function statistic() {
@@ -74,6 +94,50 @@ function statistic() {
     Highestexpense.innerText = "Highest Expenses : ₹" + Math.abs(maxexpense);
     NoTransaction.innerText = "Total Transaction : " + count;
     averageid.innerText = "Average Transaction : ₹" + average;
+}
+function categoryStatus() {
+
+    let food = 0;
+    let travel = 0;
+    let shopping = 0;
+    let bills = 0;
+    let health = 0;
+    let others = 0;
+
+    for (let i = 0; i < details.length; i++) {
+
+        let amount = Number(details[i].amount);
+        if (amount >= 0) {
+            continue;
+        }
+        if (details[i].category === "Food") {
+            food += Math.abs(amount);
+        }
+        else if (details[i].category === "Travel") {
+            travel += Math.abs(amount);
+        }
+        else if (details[i].category === "Shopping") {
+            shopping += Math.abs(amount);
+        }
+        else if (details[i].category === "Bills") {
+            bills += Math.abs(amount);
+        }
+        else if (details[i].category === "Health") {
+            health += Math.abs(amount);
+        }
+        else if (details[i].category === "Others") {
+            others += Math.abs(amount);
+        }
+    }
+
+    foodId.innerText = "🍔 Food : ₹" + food;
+    travelId.innerText = "✈️ Travel : ₹" + travel;
+    shoppingId.innerText = "🛍 Shopping : ₹" + shopping;
+    billsId.innerText = "💡 Bills : ₹" + bills;
+    healthId.innerText = "🏥 Health : ₹" + health;
+    othersId.innerText = "📦 Others : ₹" + others;
+
+    drawCategoryChart(food, travel, shopping, bills, health, others);
 }
 
 function renderTransaction(information) {
@@ -134,6 +198,8 @@ function renderTransaction(information) {
 
 
             statistic();
+            categoryStatus();
+            monthlyComparison();
 
         })
 
@@ -150,6 +216,7 @@ function renderTransaction(information) {
             t.amount=newAmount;
             localStorage.setItem("Details",JSON.stringify(details));
             location.reload();
+            monthlyComparison();
         });
 
         li.appendChild(span1);
@@ -174,10 +241,16 @@ addBtn.addEventListener("click", (event) => {
     event.preventDefault();
     let desc = description.value;
     let input = amount.value;
+    let cat=category.value;
+    if (category.value===""){
+        alert("Please select a category");
+        return;
+    }
     let num = Number(input);
     let Transaction = {
         description: desc,
         amount: input,
+        category:cat,
         timestamp: new Date().toLocaleString()
     };
 
@@ -186,6 +259,8 @@ addBtn.addEventListener("click", (event) => {
     let tempdetail = [Transaction];
     renderTransaction(tempdetail);
     statistic();
+    categoryStatus();
+    monthlyComparison();
 });
 
 let clearBtn = document.getElementById("clearBtn");
@@ -217,6 +292,7 @@ clearBtn.addEventListener("click", () => {
         Highestexpense.innerText = "Highest Expenses : ₹0";
         NoTransaction.innerText = "Total Transaction : 0";
         averageid.innerText = "Average Transaction : ₹0";
+        monthlyComparison();
 
     }
 });
@@ -227,3 +303,213 @@ setInterval(() => {
     time.innerText = now.toLocaleDateString() + "\n" + now.toLocaleTimeString();
 
 }, 1000);
+
+function monthlyComparison() {
+
+    let currentMonth = new Date().getMonth();
+    let previousMonth = currentMonth - 1;
+
+    let currentExpense = 0;
+    let previousExpense = 0;
+
+    let difference = 0;
+    let percentage = 0;
+    let status = "";
+
+    for (let i = 0; i < details.length; i++) {
+
+        let date = new Date(details[i].timestamp);
+        let month = date.getMonth();
+        let amount = Number(details[i].amount);
+
+        console.log(details[i].timestamp);
+        console.log(month);
+        console.log(amount);
+        console.log(details[i].category);
+
+        if (amount > 0) {
+            continue;
+        }
+
+        if (month === currentMonth) {
+            currentExpense += Math.abs(amount);
+        }
+        else if (month === previousMonth) {
+            previousExpense += Math.abs(amount);
+        }
+    }
+
+    if (currentExpense < previousExpense) {
+
+        difference = previousExpense - currentExpense;
+
+        if (previousExpense > 0) {
+            percentage = Math.round((difference / previousExpense) * 100);
+        }
+
+        status = "🟢 Great! Expenses are under control.";
+
+    }
+    else if (currentExpense > previousExpense) {
+
+        difference = currentExpense - previousExpense;
+
+        if (previousExpense > 0) {
+            percentage = Math.round((difference / previousExpense) * 100);
+        }
+
+        status = "🔴 Warning! Expenses increased.";
+
+    }
+    else {
+
+        difference = 0;
+        percentage = 0;
+        status = "🟡 Expenses remained the same.";
+    }
+
+    currentMonthText.innerText = "Current Month : ₹" + currentExpense;
+    previousMonthText.innerText = "Previous Month : ₹" + previousExpense;
+    differenceMonthText.innerText = "Difference : ₹" + difference + " (" + percentage + "%)";
+    statusMonthText.innerText = status;
+
+//-----------------------for chart-------------------//
+    if (expenseGraph) {
+        expenseGraph.destroy();
+                        }
+
+        expenseGraph = new Chart(ctx, {
+        type: "bar",
+        data: {
+            labels: ["Previous Month", "Current Month"],
+            datasets: [{
+                label: "Expenses (₹)",
+                data: [previousExpense, currentExpense],
+
+                backgroundColor: [
+                    "#ff4d4d",
+                    "#00ff88"
+                ],
+
+                borderRadius: 15,
+                borderSkipped: false,
+                barThickness: 80
+            }]
+        },
+
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+
+            plugins: {
+                legend: {
+                    labels: {
+                        color: "white",
+                        font: {
+                            size: 13
+                        }
+                    }
+                }
+            },
+
+            scales: {
+                x: {
+                    ticks: {
+                        color: "white",
+                        maxRotation:0,
+                        minRotation:0,
+                        font: {
+                            size: 14
+                        }
+                    },
+                    grid: {
+                        display: false
+                    }
+                },
+
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        color: "white",
+                        maxRotation:0,
+                        minRotation:0,
+                    },
+                    grid: {
+                        color: "rgba(255,255,255,.08)"
+                    }
+                }
+            },
+            animation: {
+                duration: 1500
+            }
+        }
+        });
+        
+}
+    function drawCategoryChart(food, travel, shopping, bills, health, others){
+
+        if(categoryGraph){
+            categoryGraph.destroy();
+        }
+
+        const piectx = document.getElementById("categoryChart");
+
+        categoryGraph = new Chart(piectx,{
+            type:"pie",
+
+            data:{
+                labels:[
+                    "Food",
+                    "Travel",
+                    "Shopping",
+                    "Bills",
+                    "Health",
+                    "Others"
+                ],
+
+                datasets:[{
+                    data:[
+                        food,
+                        travel,
+                        shopping,
+                        bills,
+                        health,
+                        others
+                    ],
+
+                    backgroundColor:[
+                        "#00ff99",
+                        "#00c8ff",
+                        "#ff9800",
+                        "#ff5252",
+                        "#ba68c8",
+                        "#ffd54f"
+                    ],
+
+                    borderWidth:3,
+                    borderColor:"#08111f",
+
+                    radius: "80%"
+                }]
+            },
+
+            options:{
+                responsive:true,
+                maintainAspectRatio:false,
+
+                plugins:{
+                    legend: {
+                            position: "bottom",
+                            labels: {
+                                color: "white",
+                                font: {
+                                    size: 11
+                                },
+                                boxWidth: 18,
+                                padding: 5
+                                    }
+                            }
+                }
+            }
+        });
+    }

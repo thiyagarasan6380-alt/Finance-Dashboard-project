@@ -17,7 +17,6 @@
             <h2>FinanceHub</h2>
             <nav class="hub-list">
                 <a href="index.html" class="nav-item active">Dashboard</a>
-                <a href="#" class="nav-item">Transaction</a>
                 <a href="#" class="nav-item">Setting</a>
             </nav>
         </aside>
@@ -30,19 +29,19 @@
             </header>
 
             <section class="Dashboard-section">
-                <div class="metric-card">
+                <div class="metric-card-balance" tabindex="0">
                     <h3 id="cardid">Total Balance</h3>
                     <strong id="balanceid">₹0.00</strong>
                 </div>
-                <div class="metric-card">
+                <div class="metric-card-income" tabindex="0">
                     <h3 id="cardid">Total Income</h3>
                     <strong id="incomeid">₹0.00</strong>
                 </div>
-                <div class="metric-card">
+                <div class="metric-card-Expense" tabindex="0">
                     <h3 id="cardid">Total Expenses</h3>
                     <strong id="expenseid">₹0.00</strong>
                 </div>
-                <div class="metric-card">
+                <div class="metric-card-save" tabindex="0">
                     <h3 id="cardid">Savings Rate </h3>
                     <strong id="savingid">-%</strong>
                 </div>
@@ -56,6 +55,16 @@
                     <form id="transaction-form">
                         <input type="text" id="description-id" placeholder="Description" required>
                         <input type="number" id="Amount-id" placeholder="Amount" required>
+                         <select id="categorylist" placeholder="Select category">
+                            <option value="" selected disabled>Select Category</option>
+                            <option>Salary</option>
+                            <option>Food</option>
+                            <option>Travel</option>
+                            <option>Shopping</option>
+                            <option>Bills</option>
+                            <option>Health</option>
+                            <option>Others</option>
+                        </select>
                         <button type="submit" id="addBtn">Add</button>
                     </form>
                 </section>
@@ -99,13 +108,79 @@
                             </div>
 
                         </div>
+                        <br>
+                        <h3 class="category-heading">🚼 Category Breakdown</h3>
+                        <div class="goals-list">
+                            <div class="stat-item">
+                            <span class="stat-value" id="category1">🍔 Food        --</span>
+                            </div>
+                        </div><br>
+                        <div id="category-stats">
+                            <div class="stat-item">
+                            <span class="stat-value" id="category2">✈️ Travel      --</span>
+                            </div>
+                        </div><br>
+                        <div id="category-stats">
+                            <div class="stat-item">
+                            <span class="stat-value" id="category3">🛍 Shopping    --</span>
+                            </div>
+                        </div><br>
+                        <div id="category-stats">
+                            <div class="stat-item">
+                            <span class="stat-value" id="category4">💡 Bills       --</span>
+                            </div>
+                        </div><br>
+                        <div id="category-stats">
+                            <div class="stat-item">
+                            <span class="stat-value" id="category5">🏥 Health      --</span>
+                            </div>
+                        </div><br>
+                        <div id="category-stats">
+                            <div class="stat-item">
+                            <span class="stat-value" id="category6">Others     --</span>
+                            </div>
+                        </div>
+                        <br>
+                        <h3>📈 Monthly Expense Comparison</h3>
+
+                        <div class="goals-list">
+
+                            <div class="stat-item">
+                                <span class="stat-value" id="currentMonth">Current Month : ₹0 </span>
+                            </div>
+
+                            <div class="stat-item">
+                                <span class="stat-value" id="previousMonth">Previous Month : ₹0</span>
+                            </div>
+
+                            <div class="stat-item">
+                                <span class="stat-value" id="difference">Difference : ₹0</span>
+                            </div>
+
+                            <div class="stat-item">
+                                <span class="stat-value" id="monthStatus">Status : --</span>
+                            </div>
+
+                        </div>
                     </section>
 
                 </div>
             </div>
+            <div class="chart">
+            <section class="Barchart">
+                <h3>📈 Monthly Expense Trend</h3>
+                <canvas id="expenseChart"></canvas>
+            </section>
+            <section class="PieChart">
+                <h3>🥧 Spending Distribution</h3>
+                <canvas id="categoryChart"></canvas>
+            </section>
+            </div>
         </main>
+        
     </div>
 </body>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="FinanceDashboard.js"></script>
 
 </html>
